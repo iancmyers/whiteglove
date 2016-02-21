@@ -1,15 +1,24 @@
 {
   "name": "goplanet",
   "version": "0.0.1",
+  "author": "Ian Christian Myers <ian@iancmyers.com>",
+  "homepage": "https://github.com/iancmyers/captain-planet",
   "description": "Find the specs that are polluting your test suite",
+  "keywords": ["tests", "captain planet", "goplanet", "test utilities"],
+  "license": "MIT",
   "bin": {
     "goplanet": "./bin/goplanet.js"
   },
   "scripts": {
     "test": "NODE_ENV=test mocha"
   },
-  "author": "Ian Christian Myers <ian@iancmyers.com>",
-  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iancmyers/captain-planet/issues"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/iancmyers/captain-planet.git"
+  },
   "dependencies": {
     "chalk": "^1.1.1",
     "chunk": "0.0.2",

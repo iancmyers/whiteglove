@@ -1,7 +1,7 @@
 Captain Planet
 ==============
 
-[![Build Status](https://travis-ci.org/iancmyers/captain-planet.svg)](https://travis-ci.org/iancmyers/captain-planet)
+[![npm Version](https://img.shields.io/npm/v/goplanet.svg)](https://www.npmjs.com/package/goplanet) [![License](https://img.shields.io/npm/l/goplanet.svg)](https://www.npmjs.com/package/goplanet) [![Build Status](https://travis-ci.org/iancmyers/captain-planet.svg)](https://travis-ci.org/iancmyers/captain-planet)
 
 Fight against the specs that are polluting your test suite! Captain Planet finds the specs that aren't cleaning up after themselves thereby contaminating the larger test suite.
 

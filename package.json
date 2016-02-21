@@ -16,7 +16,9 @@
     "goplanet": "./bin/goplanet.js"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha",
+    "preversion": "npm test",
+    "postversion": "git push origin HEAD && git push origin HEAD --tags"
   },
   "bugs": {
     "url": "https://github.com/iancmyers/captain-planet/issues"

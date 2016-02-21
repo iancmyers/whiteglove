@@ -1,5 +1,5 @@
-var cli = require('../lib/cli');
-var assert = require('assert');
+const cli = require('../lib/cli');
+const assert = require('assert');
 
 describe('cli', function() {
   this.timeout(10000);

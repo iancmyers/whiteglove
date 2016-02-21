@@ -1,7 +1,8 @@
-var assert = require('assert');
-var sinon = require ('sinon');
-var TestableClass = require('../testable');
-var testable;
+"use strict";
+const assert = require('assert');
+const sinon = require ('sinon');
+const TestableClass = require('../testable');
+let testable;
 
 describe('Okay TestableClass', () => {
   beforeEach(() => {

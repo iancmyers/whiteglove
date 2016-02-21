@@ -4,7 +4,12 @@
   "author": "Ian Christian Myers <ian@iancmyers.com>",
   "homepage": "https://github.com/iancmyers/captain-planet",
   "description": "Find the specs that are polluting your test suite",
-  "keywords": ["tests", "captain planet", "goplanet", "test utilities"],
+  "keywords": [
+    "tests",
+    "captain planet",
+    "goplanet",
+    "test utilities"
+  ],
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
@@ -17,11 +22,12 @@
     "url": "https://github.com/iancmyers/captain-planet/issues"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/iancmyers/captain-planet.git"
+    "type": "git",
+    "url": "https://github.com/iancmyers/captain-planet.git"
   },
   "dependencies": {
     "chalk": "^1.1.1",
+    "char-spinner": "^1.0.1",
     "chunk": "0.0.2",
     "mocha": "^2.4.5",
     "optionator": "^0.8.1",

@@ -6,7 +6,7 @@ Captain Planet
 Fight against the specs that are polluting your test suite! Captain Planet finds the specs that aren't cleaning up after themselves thereby contaminating the larger test suite.
 
 ```bash
-$ npm install goplanet
+$ npm install -g goplanet
 ```
 
 All we need to hunt down these polluting specs is **(1)** the path to spec that passes in isolation, but fails when run with the larger test suite, **(2)** the path to your test directory, and **(3)** your test runner command (_defaults to_ `mocha`):

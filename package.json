@@ -6,6 +6,7 @@
   "description": "Find the specs that are polluting your test suite",
   "keywords": ["tests", "captain planet", "goplanet", "test utilities"],
   "license": "MIT",
+  "preferGlobal": true,
   "bin": {
     "goplanet": "./bin/goplanet.js"
   },

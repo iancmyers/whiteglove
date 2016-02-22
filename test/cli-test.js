@@ -22,4 +22,13 @@ describe('cli', function() {
       done();
     });
   });
+
+  it('does not report tests that are failing', (done) => {
+    cli.execute([
+      '','','./test/fixtures/failing/fine.js', './test/fixtures/failing', '-r', 'mocha'
+    ], (paths) => {
+      assert(paths.length === 0);
+      done();
+    });
+  })
 });

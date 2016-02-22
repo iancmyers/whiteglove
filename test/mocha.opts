@@ -1,0 +1,5 @@
+--require ./test/test-helper.js
+--reporter spec
+--colors
+--timeout 10000
+--slow 5000

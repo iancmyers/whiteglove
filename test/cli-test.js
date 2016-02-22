@@ -2,15 +2,17 @@ const cli = require('../lib/cli');
 const assert = require('assert');
 
 describe('cli', function() {
-  this.timeout(10000);
-
   it('finds leaky tests when they exist', (done) => {
     cli.execute([
       '','','./test/fixtures/leaky/fine.js', './test/fixtures/leaky', '-r', 'mocha'
     ], (paths) => {
-      assert(paths.length === 1);
-      assert(/leaky\/leaky\.js$/.test(paths[0]))
-      done();
+      try {
+        expect(paths).to.have.length(1);
+        expect(paths[0]).to.match(/leaky\/leaky\.js$/)
+        done();
+      } catch (e) {
+        done(e);
+      }
     });
   });
 
@@ -18,8 +20,12 @@ describe('cli', function() {
     cli.execute([
       '','','./test/fixtures/stable/fine.js', './test/fixtures/stable', '-r', 'mocha'
     ], (paths) => {
-      assert(paths.length === 0);
-      done();
+      try {
+        expect(paths).to.have.length(0);
+        done();
+      } catch (e) {
+        done(e);
+      }
     });
   });
 
@@ -27,8 +33,12 @@ describe('cli', function() {
     cli.execute([
       '','','./test/fixtures/failing/fine.js', './test/fixtures/failing', '-r', 'mocha'
     ], (paths) => {
-      assert(paths.length === 0);
-      done();
+      try {
+        expect(paths).to.have.length(0);
+        done();
+      } catch (e) {
+        done(e);
+      }
     });
   })
 });

@@ -8,7 +8,9 @@
     "tests",
     "captain planet",
     "goplanet",
-    "test utilities"
+    "test utilities",
+    "test bisect",
+    "mocha bisect"
   ],
   "license": "MIT",
   "preferGlobal": true,

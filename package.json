@@ -1,6 +1,6 @@
 {
   "name": "goplanet",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": "Ian Christian Myers <ian@iancmyers.com>",
   "homepage": "https://github.com/iancmyers/captain-planet",
   "description": "Find the specs that are polluting your test suite",

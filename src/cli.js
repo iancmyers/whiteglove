@@ -113,7 +113,14 @@ function generateOutput(run) {
 }
 
 export function execute(args, done) {
-  const runtimeOptions = options.parse(args);
+  let runtimeOptions;
+
+  try {
+    runtimeOptions = options.parse(args);
+  } catch (e) {
+    error(e.message);
+    process.exit(1);
+  }
 
   if (runtimeOptions.help) {
     info(options.generateHelp());
@@ -136,7 +143,14 @@ export function execute(args, done) {
   try {
     fs.accessSync(spec, fs.R_OK);
   } catch (e) {
-    error(`Unable to read the known good spec: ${chalk.underline(spec)}`);
+    error(`Unable to read the known good test: ${chalk.underline(relative(spec))}`);
+    process.exit(1);
+  }
+
+  try {
+    fs.accessSync(dir, fs.R_OK);
+  } catch (e) {
+    error(`Unable to read the test directory: ${chalk.underline(relative(dir))}`);
     process.exit(1);
   }
 

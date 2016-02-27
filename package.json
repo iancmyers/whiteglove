@@ -22,7 +22,7 @@
     "build": "babel src --out-dir lib",
     "lint": "eslint . --ignore-path .gitignore",
     "preversion": "npm test",
-    "postversion": "git push origin HEAD && git push origin HEAD --tags"
+    "postversion": "git push origin HEAD && git push origin HEAD --tags && npm publish"
   },
   "bugs": {
     "url": "https://github.com/iancmyers/captain-planet/issues"

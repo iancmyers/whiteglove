@@ -102,7 +102,7 @@ function generateOutput(run) {
     const time = `${(Date.now() - startTime) / 1000}s`;
 
     if (!paths.length) {
-      info(`${chalk.green(0)} leaky tests found affecting ${chalk.underline(relativeSpecPath)}`);
+      info(`${chalk.green(0)} leaky tests found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}`);
     } else {
       info(`${chalk.red(paths.length)} leaky ${pluralize('test', paths.length)} found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}\n`);
       paths.forEach(badPath => info(`    ${chalk.red('\u2716')} ${relative(badPath)}`));

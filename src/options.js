@@ -1,8 +1,7 @@
 const optionator = require('optionator');
 
 module.exports = optionator({
-  prepend: `\n> goplanet spec.js dir [options]`,
-  append: `\n`,
+  prepend: 'goplanet spec.js dir [options]',
   defaults: {
     mergeRepeatedObjects: true,
     concatRepeatedArrays: true,
@@ -25,7 +24,7 @@ module.exports = optionator({
     {
       option: 'verbose',
       type: 'Boolean',
-      description: 'Output a ridiculous amout of information',
+      description: 'Output a ridiculous amount of information',
     },
     {
       option: 'help',

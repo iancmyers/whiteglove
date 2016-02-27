@@ -20,3 +20,14 @@ You can also specify a filename matcher to filter out non-test files (_defaults 
 ```bash
 $ goplanet /path/to/spec.js /path/to/test/dir -r mocha -p .jsx -p .js
 ```
+
+And here's the full list of available options:
+
+```bash
+goplanet spec.js dir [options]
+
+  -r, --runner String      Command used to run the test suite - default: node
+  -p, --patterns [String]  Filename patterns matching your spec files - default: ['.js']
+  --verbose                Output a ridiculous amount of information
+  -h, --help               Display this helpful help menu
+```

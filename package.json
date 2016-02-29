@@ -20,7 +20,7 @@
   "scripts": {
     "test": "npm run lint && mocha --compilers js:babel-register",
     "cover": "babel-istanbul cover ./node_modules/.bin/_mocha",
-    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "coveralls": "npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "build": "babel src --out-dir lib",
     "lint": "eslint . --ignore-path .gitignore",
     "preversion": "npm test && npm run build",

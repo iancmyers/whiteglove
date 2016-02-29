@@ -2,7 +2,7 @@
 
 const cli = require('../lib/cli');
 cli.execute(process.argv, (run) => {
-  if (run.reportedTests().length) {
+  if (!run || run.reportedTests().length) {
     process.exit(1);
   } else {
     process.exit(0);

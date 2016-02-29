@@ -18,10 +18,11 @@
     "goplanet": "./bin/goplanet.js"
   },
   "scripts": {
-    "test": "npm run build && npm run lint && mocha",
+    "test": "npm run lint && mocha --compilers js:babel-register",
+    "cover": "babel-istanbul cover ./node_modules/.bin/_mocha",
     "build": "babel src --out-dir lib",
     "lint": "eslint . --ignore-path .gitignore",
-    "preversion": "npm test",
+    "preversion": "npm test && npm run build",
     "postversion": "git push origin HEAD && git push origin HEAD --tags && npm publish"
   },
   "bugs": {
@@ -41,7 +42,9 @@
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
+    "babel-istanbul": "^0.6.0",
     "babel-preset-es2015": "^6.5.0",
+    "babel-register": "^6.5.2",
     "chai": "^3.5.0",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^6.0.2",

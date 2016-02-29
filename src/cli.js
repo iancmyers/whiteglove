@@ -1,4 +1,4 @@
-/* eslint max-len:0 */
+/* eslint max-len:0, consistent-return:0 */
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
@@ -40,7 +40,6 @@ function findTestPaths(run) {
     () => run,
     () => {
       error(`Error encountered while traversing directory: ${relative(run.dir)}`);
-      process.exit(1);
     }
   );
 }
@@ -112,19 +111,19 @@ function generateOutput(run) {
   });
 }
 
-export function execute(args, done) {
+export function execute(args, exit) {
   let runtimeOptions;
 
   try {
     runtimeOptions = options.parse(args);
   } catch (e) {
     error(e.message);
-    process.exit(1);
+    return exit();
   }
 
   if (runtimeOptions.help) {
     info(options.generateHelp());
-    process.exit(0);
+    return exit(true);
   }
 
   if (runtimeOptions.verbose) {
@@ -133,7 +132,7 @@ export function execute(args, done) {
 
   if (runtimeOptions._.length !== 2) {
     error('You must provide a spec that passes in isolation and the path to a test directory');
-    process.exit(1);
+    return exit();
   }
 
   startTime = Date.now();
@@ -144,14 +143,14 @@ export function execute(args, done) {
     fs.accessSync(spec, fs.R_OK);
   } catch (e) {
     error(`Unable to read the known good test: ${chalk.underline(relative(spec))}`);
-    process.exit(1);
+    return exit();
   }
 
   try {
     fs.accessSync(dir, fs.R_OK);
   } catch (e) {
     error(`Unable to read the test directory: ${chalk.underline(relative(dir))}`);
-    process.exit(1);
+    return exit();
   }
 
   info(`runner: ${runtimeOptions.runner}, patterns: ${runtimeOptions.patterns}`);
@@ -163,9 +162,9 @@ export function execute(args, done) {
     .then(bisectPaths)
     .then(verifyResults)
     .then(generateOutput)
-    .then((paths) => {
+    .then((finishedRun) => {
       clearInterval(waiting);
-      done(paths);
+      exit(finishedRun);
     });
 }
 

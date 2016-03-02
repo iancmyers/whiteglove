@@ -1,21 +1,22 @@
 {
-  "name": "goplanet",
+  "name": "whiteglove",
   "version": "0.7.0",
   "author": "Ian Christian Myers <ian@iancmyers.com>",
-  "homepage": "https://github.com/iancmyers/captain-planet",
-  "description": "Find the specs that are polluting your test suite",
+  "homepage": "https://github.com/iancmyers/whiteglove",
+  "description": "Find the dirty tests making a mess of your test suite",
   "keywords": [
     "tests",
-    "captain planet",
-    "goplanet",
+    "whiteglove",
+    "white glove",
     "test utilities",
     "test bisect",
-    "mocha bisect"
+    "mocha bisect",
+    "test utils"
   ],
   "license": "MIT",
   "preferGlobal": true,
   "bin": {
-    "goplanet": "./bin/goplanet.js"
+    "whiteglove": "./bin/whiteglove.js"
   },
   "scripts": {
     "test": "npm run lint && mocha --compilers js:babel-register",
@@ -27,11 +28,11 @@
     "postversion": "git push origin HEAD && git push origin HEAD --tags && npm publish"
   },
   "bugs": {
-    "url": "https://github.com/iancmyers/captain-planet/issues"
+    "url": "https://github.com/iancmyers/whiteglove/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iancmyers/captain-planet.git"
+    "url": "https://github.com/iancmyers/whiteglove.git"
   },
   "dependencies": {
     "chalk": "^1.1.1",

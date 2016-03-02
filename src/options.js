@@ -1,7 +1,7 @@
 const optionator = require('optionator');
 
 module.exports = optionator({
-  prepend: 'goplanet spec.js dir [options]',
+  prepend: 'whiteglove spec.js dir [options]',
   defaults: {
     mergeRepeatedObjects: true,
     concatRepeatedArrays: true,

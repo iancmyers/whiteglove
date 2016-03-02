@@ -1,6 +1,6 @@
 {
   "name": "whiteglove",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "author": "Ian Christian Myers <ian@iancmyers.com>",
   "homepage": "https://github.com/iancmyers/whiteglove",
   "description": "Find the dirty tests making a mess of your test suite",

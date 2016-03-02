@@ -15,10 +15,6 @@ import BisectRun from './bisect-run';
 let waiting;
 let startTime;
 
-function pad(size) {
-  return new Array(size + 1).join(' ');
-}
-
 function relative(absolutePath) {
   return path.relative(process.cwd(), absolutePath);
 }
@@ -53,7 +49,7 @@ function bisectPaths(run) {
     let execCount = 0;
     const { runner, spec } = run;
     const divisor = os.cpus().length;
-    verbose(`Starting bisection with parallelism of ${divisor}`);
+    verbose(`Starting search with parallelism of ${divisor}`);
 
     (function bisect(paths) {
       // Here we parallelize such that each cpu gets one process.
@@ -64,10 +60,10 @@ function bisectPaths(run) {
         exec(`${runner} ${pathList.join(' ')} ${spec}`, (err) => {
           execCount--;
           if (err && pathList.length > 1) {
-            verbose(`Found problematic test in path list of size ${pathList.length}:\n${pad(9)}${pathList.join(`\n${pad(9)}`)}`);
+            verbose(`Test run failed with ${pathList.length} tests, splitting list and re-running`);
             bisect(pathList);
           } else if (err) {
-            verbose(`Found problematic test: ${relative(pathList[0])}`);
+            verbose(`Found potentially dirty test: ${relative(pathList[0])}`);
             run.reportTest(pathList[0]);
           }
           if (!execCount) { resolve(run); }
@@ -82,7 +78,7 @@ function verify(run, test) {
   return new Promise((resolve) => {
     exec(`${runner} ${test}`, (err) => {
       if (err) {
-        warn(`Isolated test run failed: ${runner} ${relative(test)}`);
+        warn(`Test run failed for single test: ${runner} ${relative(test)}`);
         run.unverifyTest(test);
       }
       resolve();
@@ -105,9 +101,9 @@ function generateOutput(run) {
     const time = `${(Date.now() - startTime) / 1000}s`;
 
     if (!paths.length) {
-      info(`${chalk.green(0)} leaky tests found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}`);
+      info(`Found ${chalk.green(0)} problematic tests found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}`);
     } else {
-      info(`${chalk.red(paths.length)} leaky ${pluralize('test', paths.length)} found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}\n`);
+      info(`Found ${chalk.red(paths.length)} problematic ${pluralize('test', paths.length)} found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}\n`);
       paths.forEach(badPath => info(`    ${chalk.red('\u2716')} ${relative(badPath)}`));
       info('\n');
     }
@@ -135,7 +131,7 @@ export function execute(args, exit) {
   }
 
   if (runtimeOptions._.length !== 2) {
-    error('You must provide a spec that passes in isolation and the path to a test directory');
+    error('You must provide the path to a test and the path to a test directory');
     return exit();
   }
 
@@ -157,7 +153,7 @@ export function execute(args, exit) {
     return exit();
   }
 
-  info(`runner: ${runtimeOptions.runner}, patterns: ${runtimeOptions.patterns}`);
+  info(`runner: ${chalk.cyan(runtimeOptions.runner)}, patterns: ${chalk.cyan(runtimeOptions.patterns)}`);
 
   waiting = spinner();
   const run = new BisectRun(spec, dir, runtimeOptions);

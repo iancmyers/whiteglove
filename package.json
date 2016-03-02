@@ -11,7 +11,9 @@
     "test utilities",
     "test bisect",
     "mocha bisect",
-    "test utils"
+    "test utils",
+    "captain planet",
+    "goplanet"
   ],
   "license": "MIT",
   "preferGlobal": true,
@@ -23,6 +25,7 @@
     "cover": "babel-istanbul cover ./node_modules/.bin/_mocha",
     "coveralls": "npm run cover && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "build": "babel src --out-dir lib",
+    "watch": "babel src --out-dir lib -w",
     "lint": "eslint . --ignore-path .gitignore",
     "preversion": "npm test && npm run build",
     "postversion": "git push origin HEAD && git push origin HEAD --tags && npm publish"

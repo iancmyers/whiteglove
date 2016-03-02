@@ -15,6 +15,10 @@ import BisectRun from './bisect-run';
 let waiting;
 let startTime;
 
+function pad(size) {
+  return new Array(size + 1).join(' ');
+}
+
 function relative(absolutePath) {
   return path.relative(process.cwd(), absolutePath);
 }
@@ -60,7 +64,7 @@ function bisectPaths(run) {
         exec(`${runner} ${pathList.join(' ')} ${spec}`, (err) => {
           execCount--;
           if (err && pathList.length > 1) {
-            verbose(`Found problematic test in path list of size ${pathList.length}, recursing to bisect`);
+            verbose(`Found problematic test in path list of size ${pathList.length}:\n${pad(9)}${pathList.join(`\n${pad(9)}`)}`);
             bisect(pathList);
           } else if (err) {
             verbose(`Found problematic test: ${relative(pathList[0])}`);

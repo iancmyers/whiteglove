@@ -1,4 +1,4 @@
-export default class Run {
+class CLIRun {
   constructor(spec, dir, options) {
     this.runner = options.runner;
     this.patterns = options.patterns;
@@ -27,3 +27,5 @@ export default class Run {
     return Object.keys(this.paths);
   }
 }
+
+export default CLIRun;

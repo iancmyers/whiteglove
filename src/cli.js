@@ -1,16 +1,15 @@
 /* eslint max-len:0, consistent-return:0 */
 import path from 'path';
 import fs from 'fs';
-import os from 'os';
 import walk from 'recursive-readdir';
-import chunk from 'chunk';
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import spinner from 'char-spinner';
 import pluralize from 'pluralize';
 import options from './options';
 import logger, { info, warn, error, verbose, levels } from './logger';
-import BisectRun from './bisect-run';
+import CLIRun from './cli-run';
+import FailFinder from './fail-finder';
 
 let waiting;
 let startTime;
@@ -44,32 +43,25 @@ function findTestPaths(run) {
   );
 }
 
-function bisectPaths(run) {
+function findAffectingTests(run) {
+  const { runner, spec, tests } = run;
   return new Promise((resolve) => {
-    let execCount = 0;
-    const { runner, spec } = run;
-    const divisor = os.cpus().length;
-    verbose(`Starting search with parallelism of ${divisor}`);
+    const finder = new FailFinder(runner, spec);
 
-    (function bisect(paths) {
-      // Here we parallelize such that each cpu gets one process.
-      const chunks = chunk(paths, Math.ceil(paths.length / divisor));
-      execCount += chunks.length;
+    finder.on('failure', (list) => {
+      if (list.length === 1) {
+        run.reportTest(list[0]);
+        verbose(`Found potentially dirty test: ${relative(list[0])}`);
+      } else {
+        verbose(`Test run failed with ${list.length} tests`);
+      }
+    });
 
-      chunks.forEach((pathList) => {
-        exec(`${runner} ${pathList.join(' ')} ${spec}`, (err) => {
-          execCount--;
-          if (err && pathList.length > 1) {
-            verbose(`Test run failed with ${pathList.length} tests, splitting list and re-running`);
-            bisect(pathList);
-          } else if (err) {
-            verbose(`Found potentially dirty test: ${relative(pathList[0])}`);
-            run.reportTest(pathList[0]);
-          }
-          if (!execCount) { resolve(run); }
-        });
-      });
-    }(run.tests));
+    finder.on('end', () => {
+      resolve(run);
+    });
+
+    finder.find(tests);
   });
 }
 
@@ -156,10 +148,10 @@ export function execute(args, exit) {
   info(`runner: ${chalk.cyan(runtimeOptions.runner)}, patterns: ${chalk.cyan(runtimeOptions.patterns)}`);
 
   waiting = spinner();
-  const run = new BisectRun(spec, dir, runtimeOptions);
+  const run = new CLIRun(spec, dir, runtimeOptions);
 
   findTestPaths(run)
-    .then(bisectPaths)
+    .then(findAffectingTests)
     .then(verifyResults)
     .then(generateOutput)
     .then((finishedRun) => {

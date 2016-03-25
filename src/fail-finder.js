@@ -1,36 +1,36 @@
 import EventEmitter from 'events';
 import chunk from 'chunk';
 import os from 'os';
-import { exec } from 'child_process';
+import ExecQueue from './exec-queue';
 import { verbose } from './logger';
+
+const CONCURRENCY = os.cpus().length - 1;
 
 class FailFinder extends EventEmitter {
   constructor(runner, test) {
     super();
     this.runner = runner;
     this.test = test;
-    this.concurrency = os.cpus().length;
-    this.execCount = 0;
+    this.queue = new ExecQueue({ concurrency: CONCURRENCY });
   }
 
   find(tests) {
-    verbose(`Starting search with concurrency of ${this.concurrency}`);
+    verbose(`Starting search with concurrency of ${CONCURRENCY}`);
     this.execute(tests);
   }
 
   execute(tests) {
-    const { runner, test, concurrency } = this;
-    const chunks = chunk(tests, Math.ceil(tests.length / concurrency));
-    this.execCount += chunks.length;
-
+    const { runner, test, queue } = this;
+    const chunks = chunk(tests, Math.ceil(tests.length / CONCURRENCY));
     chunks.forEach((list) => {
-      exec(`${runner} ${list.join(' ')} ${test}`, (err) => {
-        this.execCount -= 1;
+      queue.enqueue(`${runner} ${list.join(' ')} ${test}`).then((err) => {
         if (err) {
           this.emit('failure', list);
           if (list.length > 1) { this.execute(list); }
         }
-        if (!this.execCount) { this.emit('end'); }
+        if (!queue.size()) {
+          this.emit('end');
+        }
       });
     });
   }

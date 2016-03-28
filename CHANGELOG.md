@@ -1,3 +1,8 @@
+v0.8.0
+------
+* Fixed npm changelog script
+* Introduced bisect and iso commands
+
 v0.7.4
 ------
 * Fixed error when using -h

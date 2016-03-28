@@ -1,36 +1,37 @@
-const optionator = require('optionator');
+import yargs from 'yargs';
 
-module.exports = optionator({
-  prepend: 'whiteglove spec.js dir [options]',
-  defaults: {
-    mergeRepeatedObjects: true,
-    concatRepeatedArrays: true,
-  },
-  options: [
-    {
-      option: 'runner',
+export default function get(argv) {
+  return yargs
+    .usage('Usage: $0 <command> [options]')
+    .demand(1, 'must provide a valid command')
+    .option('runner', {
       alias: 'r',
-      type: 'String',
       default: 'node',
-      description: 'Command used to run the test suite',
-    },
-    {
-      option: 'patterns',
+      describe: 'Command used to run the test suite',
+      type: 'string',
+      global: true,
+    })
+    .option('patterns', {
       alias: 'p',
-      type: '[String]',
-      default: '[\'.js\']',
-      description: 'Filename patterns matching your spec files',
-    },
-    {
-      option: 'verbose',
-      type: 'Boolean',
-      description: 'Output a ridiculous amount of information',
-    },
-    {
-      option: 'help',
-      alias: 'h',
-      type: 'Boolean',
-      description: 'Display this helpful help menu',
-    },
-  ],
-});
+      default: ['.js', '.jsx', '.node'],
+      describe: 'Filename patterns matching your spec files',
+      type: 'array',
+      global: true,
+    })
+    .option('verbose', {
+      describe: 'Output a ridiculous amount of information',
+      type: 'boolean',
+      global: true,
+    })
+    .command('bisect <test> <directory>', 'find leaky tests affecting a target test')
+    .example('$0 bisect ./tests/foo.js ./tests')
+    .command('iso <directory>', 'find tests that fail in isolation')
+    .example('$0 iso ./tests')
+    .version()
+    .help()
+    .showHelpOnFail(false, 'Specify --help,-h for available options')
+    .alias('h', 'help')
+    .alias('v', 'version')
+    .strict()
+    .parse(argv.slice(2));
+}

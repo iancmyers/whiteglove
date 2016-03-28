@@ -9,7 +9,9 @@ import pluralize from 'pluralize';
 import options from './options';
 import logger, { info, warn, error, verbose, levels } from './logger';
 import CLIRun from './cli-run';
-import FailFinder from './fail-finder';
+import BisectFinder from './bisect-finder';
+import IsoFinder from './iso-finder';
+import assign from 'object-assign';
 
 let waiting;
 let startTime;
@@ -46,7 +48,7 @@ function findTestPaths(run) {
 function findAffectingTests(run) {
   const { runner, spec, tests } = run;
   return new Promise((resolve) => {
-    const finder = new FailFinder(runner, spec);
+    const finder = new BisectFinder(runner, spec);
 
     finder.on('failure', (list) => {
       if (list.length === 1) {
@@ -55,6 +57,24 @@ function findAffectingTests(run) {
       } else {
         verbose(`Test run failed with ${list.length} tests`);
       }
+    });
+
+    finder.on('end', () => {
+      resolve(run);
+    });
+
+    finder.find(tests);
+  });
+}
+
+function findIsolatedFailingTests(run) {
+  const { runner, tests } = run;
+  return new Promise((resolve) => {
+    const finder = new IsoFinder(runner);
+
+    finder.on('failure', (test) => {
+      run.reportTest(test);
+      verbose(`Found test that fails in isolation: ${relative(test)}`);
     });
 
     finder.on('end', () => {
@@ -85,7 +105,7 @@ function verifyResults(run) {
     .then(() => run);
 }
 
-function generateOutput(run) {
+function generateBisectOutput(run) {
   return new Promise((resolve) => {
     const { spec } = run;
     const paths = run.reportedTests();
@@ -93,9 +113,9 @@ function generateOutput(run) {
     const time = `${(Date.now() - startTime) / 1000}s`;
 
     if (!paths.length) {
-      info(`Found ${chalk.green(0)} problematic tests found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}`);
+      info(`Found ${chalk.green(0)} problematic tests affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}`);
     } else {
-      info(`Found ${chalk.red(paths.length)} problematic ${pluralize('test', paths.length)} found affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}\n`);
+      info(`Found ${chalk.red(paths.length)} problematic ${pluralize('test', paths.length)} affecting ${chalk.underline(relativeSpecPath)} ${chalk.dim(time)}\n`);
       paths.forEach(badPath => info(`    ${chalk.red('\u2716')} ${relative(badPath)}`));
       info('\n');
     }
@@ -103,39 +123,43 @@ function generateOutput(run) {
   });
 }
 
-export function execute(args, exit) {
-  let runtimeOptions;
+function generateIsoOutput(run) {
+  return new Promise((resolve) => {
+    const paths = run.reportedTests();
+    const time = `${(Date.now() - startTime) / 1000}s`;
 
-  try {
-    runtimeOptions = options.parse(args);
-  } catch (e) {
-    error(e.message);
-    return exit();
-  }
+    if (!paths.length) {
+      info(`Found ${chalk.green(0)} tests failing in isolation ${chalk.dim(time)}`);
+    } else {
+      info(`Found ${chalk.red(paths.length)} ${pluralize('test', paths.length)} failing in isolation ${chalk.dim(time)}\n`);
+      paths.forEach(badPath => info(`    ${chalk.red('\u2716')} ${relative(badPath)}`));
+      info('\n');
+    }
+    resolve(run);
+  });
+}
 
-  if (runtimeOptions.help) {
-    info(options.generateHelp());
-    return exit(true);
-  }
+export function execute(argv, exit) {
+  startTime = Date.now();
+  const runtimeOptions = options(argv);
+  const cmd = runtimeOptions._.shift();
+  const {
+    directory: dir,
+    test: spec,
+  } = runtimeOptions;
+  const run = new CLIRun(assign({ spec, dir }, runtimeOptions));
 
   if (runtimeOptions.verbose) {
     logger(levels.VERBOSE);
   }
 
-  if (runtimeOptions._.length !== 2) {
-    error('You must provide the path to a test and the path to a test directory');
-    return exit();
-  }
-
-  startTime = Date.now();
-  const spec = path.resolve(process.cwd(), runtimeOptions._.shift());
-  const dir = path.resolve(process.cwd(), runtimeOptions._.shift());
-
-  try {
-    fs.accessSync(spec, fs.R_OK);
-  } catch (e) {
-    error(`Unable to read the known good test: ${chalk.underline(relative(spec))}`);
-    return exit();
+  if (spec) {
+    try {
+      fs.accessSync(spec, fs.R_OK);
+    } catch (e) {
+      error(`Unable to read the known good test: ${chalk.underline(relative(spec))}`);
+      return exit();
+    }
   }
 
   try {
@@ -148,16 +172,27 @@ export function execute(args, exit) {
   info(`runner: ${chalk.cyan(runtimeOptions.runner)}, patterns: ${chalk.cyan(runtimeOptions.patterns)}`);
 
   waiting = spinner();
-  const run = new CLIRun(spec, dir, runtimeOptions);
 
-  findTestPaths(run)
-    .then(findAffectingTests)
-    .then(verifyResults)
-    .then(generateOutput)
-    .then((finishedRun) => {
-      clearInterval(waiting);
-      exit(finishedRun);
-    });
+  if (cmd === 'bisect') {
+    findTestPaths(run)
+      .then(findAffectingTests)
+      .then(verifyResults)
+      .then(generateBisectOutput)
+      .then((finishedRun) => {
+        clearInterval(waiting);
+        exit(finishedRun);
+      });
+  }
+
+  if (cmd === 'iso') {
+    findTestPaths(run)
+      .then(findIsolatedFailingTests)
+      .then(generateIsoOutput)
+      .then((finishedRun) => {
+        clearInterval(waiting);
+        exit(finishedRun);
+      });
+  }
 }
 
 process.on('unhandledRejection', (err) => {

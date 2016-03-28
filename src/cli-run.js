@@ -1,9 +1,9 @@
 class CLIRun {
-  constructor(spec, dir, options) {
+  constructor(options) {
     this.runner = options.runner;
     this.patterns = options.patterns;
-    this.spec = spec;
-    this.dir = dir;
+    this.spec = options.spec;
+    this.dir = options.dir;
     this.tests = [];
     this.paths = Object.create({});
   }

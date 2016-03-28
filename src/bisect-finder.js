@@ -6,7 +6,7 @@ import { verbose } from './logger';
 
 const CONCURRENCY = os.cpus().length - 1;
 
-class FailFinder extends EventEmitter {
+class BisectFinder extends EventEmitter {
   constructor(runner, test) {
     super();
     this.runner = runner;
@@ -36,4 +36,4 @@ class FailFinder extends EventEmitter {
   }
 }
 
-export default FailFinder;
+export default BisectFinder;

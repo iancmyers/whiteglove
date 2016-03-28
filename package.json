@@ -27,7 +27,7 @@
     "build": "babel src --out-dir lib",
     "watch": "babel src --out-dir lib -w",
     "lint": "eslint . --ignore-path .gitignore",
-    "changelog": "git changelog | pbcopy && $EDITOR --wait CHANGELOG.md",
+    "changelog": "git log `git describe --tags --abbrev=0`..HEAD --oneline --pretty=format:'* %s' | pbcopy && $EDITOR --wait CHANGELOG.md",
     "preversion": "npm test && npm run build && npm run changelog && git add CHANGELOG.md",
     "postversion": "git push origin HEAD && git push origin HEAD --tags && npm publish"
   },

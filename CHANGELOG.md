@@ -1,3 +1,7 @@
+v0.8.1
+------
+* Fixed issue where bisect would exceed desired concurrency
+
 v0.8.0
 ------
 * Fixed npm changelog script

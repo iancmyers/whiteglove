@@ -24,10 +24,10 @@ class ExecQueue {
 
   enqueue(cmd) {
     return new Promise((resolve) => {
-      this.queue.push({ cmd, resolve });
-      if (this.queue.length < this.concurrency) {
+      if (this.size() < this.concurrency) {
         process.nextTick(() => this.service());
       }
+      this.queue.push({ cmd, resolve });
     });
   }
 }

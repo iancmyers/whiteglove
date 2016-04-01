@@ -1,5 +1,5 @@
 const cli = require('../src/cli');
-const logger = require('../src/logger');
+const logger = require('../src/logger').default;
 const sinon = require('sinon');
 
 describe('whiteglove', () => {
@@ -92,7 +92,7 @@ describe('whiteglove', () => {
 
   describe('options', () => {
     beforeEach(() => {
-      logger.default(logger.levels.INFO);
+      logger.level('info');
     });
 
     it('produces verbose output with --verbose', (done) => {

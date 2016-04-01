@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import chunk from 'chunk';
 import os from 'os';
 import ExecQueue from './exec-queue';
-import { verbose } from './logger';
+import logger from './logger';
 
 const CONCURRENCY = os.cpus().length - 1;
 
@@ -15,7 +15,7 @@ class BisectFinder extends EventEmitter {
   }
 
   find(tests) {
-    verbose(`Starting search with concurrency of ${CONCURRENCY}`);
+    logger.verbose(`Starting search with concurrency of ${CONCURRENCY}`);
     this.execute(tests);
   }
 

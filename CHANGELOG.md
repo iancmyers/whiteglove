@@ -1,3 +1,8 @@
+v0.8.2
+------
+* Fixed bug that would cause error when reporting error
+* Moved logging to winston, added verbose for iso
+
 v0.8.1
 ------
 * Fixed issue where bisect would exceed desired concurrency

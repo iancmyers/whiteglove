@@ -7,7 +7,7 @@ import { exec } from 'child_process';
 import spinner from 'char-spinner';
 import pluralize from 'pluralize';
 import options from './options';
-import logger from './logger';
+import * as logger from './logger';
 import CLIRun from './cli-run';
 import BisectFinder from './bisect-finder';
 import IsoFinder from './iso-finder';

@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import chunk from 'chunk';
 import os from 'os';
 import ExecQueue from './exec-queue';
-import logger from './logger';
+import * as logger from './logger';
 
 const CONCURRENCY = os.cpus().length - 1;
 

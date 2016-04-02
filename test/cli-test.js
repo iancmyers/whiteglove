@@ -1,5 +1,5 @@
 const cli = require('../src/cli');
-const logger = require('../src/logger').default;
+const logger = require('../src/logger');
 const sinon = require('sinon');
 
 describe('whiteglove', () => {

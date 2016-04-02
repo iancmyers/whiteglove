@@ -7,13 +7,11 @@ const logger = new winston.Logger({ transports });
 logger.cli();
 logger.level = 'info';
 
-export default {
-  error: logger.error,
-  warn: logger.warn,
-  info: process.env.NODE_ENV !== 'test' ? console.log : () => {},
-  verbose: logger.verbose,
-  silly: logger.silly,
-  level: (level) => {
-    logger.level = level;
-  },
-};
+export const error = logger.error;
+export const warn = logger.warn;
+export const info = process.env.NODE_ENV !== 'test' ? console.log : () => {};
+export const verbose = logger.verbose;
+export const silly = logger.silly;
+export function level(newLevel) {
+  logger.level = newLevel;
+}

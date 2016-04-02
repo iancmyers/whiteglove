@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import os from 'os';
 import ExecQueue from './exec-queue';
-import logger from './logger';
+import * as logger from './logger';
 
 const CONCURRENCY = os.cpus().length - 1;
 

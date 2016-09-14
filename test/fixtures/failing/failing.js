@@ -2,6 +2,7 @@
 const assert = require('assert');
 const sinon = require('sinon');
 const TestableClass = require('../testable');
+
 let testable;
 
 describe('Good TestableClass', () => {

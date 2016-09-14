@@ -6,12 +6,12 @@ import chalk from 'chalk';
 import { exec } from 'child_process';
 import spinner from 'char-spinner';
 import pluralize from 'pluralize';
+import assign from 'object-assign';
 import options from './options';
 import * as logger from './logger';
 import CLIRun from './cli-run';
 import BisectFinder from './bisect-finder';
 import IsoFinder from './iso-finder';
-import assign from 'object-assign';
 
 let waiting;
 let startTime;
@@ -139,7 +139,7 @@ function generateIsoOutput(run) {
   });
 }
 
-export function execute(argv, exit) {
+export default function execute(argv, exit) {
   startTime = Date.now();
   const runtimeOptions = options(argv);
   const cmd = runtimeOptions._.shift();

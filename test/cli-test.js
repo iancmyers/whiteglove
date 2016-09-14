@@ -1,11 +1,11 @@
-const cli = require('../src/cli');
+const execute = require('../src/cli').default;
 const logger = require('../src/logger');
 const sinon = require('sinon');
 
 describe('whiteglove', () => {
   describe('bisect', () => {
     it('finds leaky tests', (done) => {
-      cli.execute([
+      execute([
         '', '', 'bisect', './test/fixtures/leaky/fine.js', './test/fixtures/leaky', '-r', 'mocha',
       ], (run) => {
         try {
@@ -19,7 +19,7 @@ describe('whiteglove', () => {
     });
 
     it('handles the no leaky tests case', (done) => {
-      cli.execute([
+      execute([
         '', '', 'bisect', './test/fixtures/stable/fine.js', './test/fixtures/stable', '-r', 'mocha',
       ], (run) => {
         try {
@@ -32,7 +32,7 @@ describe('whiteglove', () => {
     });
 
     it('does not report tests that are failing', (done) => {
-      cli.execute([
+      execute([
         '',
         '',
         'bisect',
@@ -53,7 +53,7 @@ describe('whiteglove', () => {
 
   describe('iso', () => {
     it('finds failing tests', (done) => {
-      cli.execute([
+      execute([
         '',
         '',
         'iso',
@@ -72,7 +72,7 @@ describe('whiteglove', () => {
     });
 
     it('does not report leaky tests', (done) => {
-      cli.execute([
+      execute([
         '',
         '',
         'iso',
@@ -97,7 +97,7 @@ describe('whiteglove', () => {
 
     it('produces verbose output with --verbose', (done) => {
       sinon.spy(logger, 'verbose');
-      cli.execute([
+      execute([
         '',
         '',
         'bisect',

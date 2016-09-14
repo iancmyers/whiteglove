@@ -1,6 +1,6 @@
 import sinon from 'sinon';
-import ExecQueue from '../src/exec-queue';
 import childProcess from 'child_process';
+import ExecQueue from '../src/exec-queue';
 
 describe('ExecQueue', () => {
   let queue;

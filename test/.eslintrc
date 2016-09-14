@@ -10,5 +10,6 @@
   "rules": {
       "func-names": [0],
       "strict": [0],
+      "import/no-extraneous-dependencies": [0],
   }
 }

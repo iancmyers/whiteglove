@@ -1,3 +1,7 @@
+v0.8.4
+------
+* Fix issue with importing execute function
+
 v0.8.3
 ------
 * Fix linting errors from updated deps

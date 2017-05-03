@@ -1,6 +1,8 @@
 whiteglove
 ==========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/iancmyers/whiteglove.svg)](https://greenkeeper.io/)
+
 [![npm Version](https://img.shields.io/npm/v/whiteglove.svg)](https://www.npmjs.com/package/whiteglove) [![License](https://img.shields.io/npm/l/whiteglove.svg)](https://www.npmjs.com/package/whiteglove) [![Build Status](https://travis-ci.org/iancmyers/whiteglove.svg)](https://travis-ci.org/iancmyers/whiteglove) [![Coverage Status](https://coveralls.io/repos/github/iancmyers/whiteglove/badge.svg?branch=master)](https://coveralls.io/github/iancmyers/whiteglove?branch=master)
 
 ```bash

@@ -33,6 +33,8 @@ Examples:
 
 Use `whiteglove bisect` when you have a test that passes in isolation, but fails when run with the larger test suite. The bisect function will determine which tests are affecting your target test.
 
+You might also use it after running `whiteglove iso`, with the fails-in-isolation tests as the argument. That way, you can find the leaky tests they relied on, and fix the leaks.
+
 ### whiteglove iso
 
 Use `whiteglove iso` to find tests that are inadvertently relying other leaky tests in order to pass.

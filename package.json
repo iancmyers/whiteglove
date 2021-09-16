@@ -39,7 +39,7 @@
     "url": "https://github.com/iancmyers/whiteglove.git"
   },
   "dependencies": {
-    "chalk": "^1.1.3",
+    "chalk": "^2.0.0",
     "char-spinner": "^1.0.1",
     "chunk": "0.0.2",
     "object-assign": "^4.1.0",
@@ -47,7 +47,7 @@
     "pluralize": "^4.0.0",
     "recursive-readdir": "^2.0.0",
     "winston": "^2.2.0",
-    "yargs": "^8.0.1"
+    "yargs": "^15.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",

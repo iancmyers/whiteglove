@@ -46,7 +46,7 @@
     "optionator": "^0.8.1",
     "pluralize": "^4.0.0",
     "recursive-readdir": "^2.0.0",
-    "winston": "^2.2.0",
+    "winston": "^3.3.0",
     "yargs": "^8.0.1"
   },
   "devDependencies": {
